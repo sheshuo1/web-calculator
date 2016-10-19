@@ -86,78 +86,72 @@
     </style>
 </head>
 <body>
-<main>
+<main id='app'>
     <header>
         <h1>web计算器</h1>
     </header>
-    <section id="display"></section>
+    <section id="display">{{ result }}</section>
     <section class="buttons">
         <section class="buttons-left">
-           <button class="btn btn-row btn-fn clear-btn" id="clear-btn">C</button>
-           <button class="btn btn-row btn-fn del-btn" id="del-btn">del</button>
-           <button class="btn btn-row btn-fn num-btn">/</button>
-           <button class="btn btn-row num-btn">9</button>
-           <button class="btn btn-row num-btn">8</button>
-           <button class="btn btn-row num-btn">7</button>
-           <button class="btn btn-row num-btn">6</button>
-           <button class="btn btn-row num-btn">5</button>
-           <button class="btn btn-row num-btn">4</button>
-           <button class="btn btn-row num-btn">3</button>
-           <button class="btn btn-row num-btn">2</button>
-           <button class="btn btn-row num-btn">1</button>
-           <button class="btn btn-row num-btn" id="btn-0">0</button>
-           <button class="btn btn-row num-btn">.</button>
+           <button class="btn btn-row btn-fn clear-btn" id="clear-btn" v-on:click="click_cancel_btn">C</button>
+           <button class="btn btn-row btn-fn del-btn" id="del-btn" v-on:click="click_delete_btn">del</button>
+           <button class="btn btn-row btn-fn num-btn" v-on:click="click_number_btn('/')">/</button>
+           <button class="btn btn-row num-btn" v-on:click="click_number_btn('9')">9</button>
+           <button class="btn btn-row num-btn" v-on:click="click_number_btn('8')">8</button>
+           <button class="btn btn-row num-btn" v-on:click="click_number_btn('7')">7</button>
+           <button class="btn btn-row num-btn" v-on:click="click_number_btn('6')">6</button>
+           <button class="btn btn-row num-btn" v-on:click="click_number_btn('5')">5</button>
+           <button class="btn btn-row num-btn" v-on:click="click_number_btn('4')">4</button>
+           <button class="btn btn-row num-btn" v-on:click="click_number_btn('3')">3</button>
+           <button class="btn btn-row num-btn" v-on:click="click_number_btn('2')">2</button>
+           <button class="btn btn-row num-btn" v-on:click="click_number_btn('1')">1</button>
+           <button class="btn btn-row num-btn" id="btn-0" v-on:click="click_number_btn('0')">0</button>
+           <button class="btn btn-row num-btn" v-on:click="click_number_btn('.')">.</button>
         </section>
         <section class="buttons-right">
-            <button class="btn btn-col btn-fn num-btn">*</button>
-            <button class="btn btn-col btn-fn num-btn">-</button>
-            <button class="btn btn-col btn-fn num-btn">+</button>
-            <button class="btn btn-col btn-fn btn-result" id="btn-result">=</button>
+            <button class="btn btn-col btn-fn num-btn" v-on:click="click_number_btn('*')">*</button>
+            <button class="btn btn-col btn-fn num-btn" v-on:click="click_number_btn('-')">-</button>
+            <button class="btn btn-col btn-fn num-btn" v-on:click="click_number_btn('+')">+</button>
+            <button class="btn btn-col btn-fn btn-result" id="btn-result" v-on:click="click_result_btn">=</button>
         </section>
     </section>
 </main>
+<script type="text/javascript" src="js/vue.js"></script>    
 <script type="text/javascript">
-    (function(window){
-        var display=document.querySelector('#display');
-        var flag=1;
-        function num_btn(btn){
-            if(flag){
-                
-            }else{
-                display.innerHTML="";
-                flag=1;
-            }
-            var code=btn.innerHTML;
-            display.innerHTML+=code;
-        }
-        function result_btn(){
-            var submite=display.innerHTML;
-            try{if(submite.length)
-                display.innerHTML=window.eval(submite);
-            }catch(err){
-                display.innerHTML="ERROR"
-            }
-            flag=0;
-        }
-        function del_btn(){
-            display.innerHTML=display.innerHTML.slice(0,this.length-1);
-        }
-        function clear_btn(){
-            display.innerHTML="";
-        }
-        document.addEventListener('click',function(e){
-            if(e.target.classList.contains("num-btn")){
-                num_btn(e.target);
-            }else if(e.target.id=="btn-result"){
-                result_btn();
-            }else if(e.target.id=="del-btn"){
-                del_btn();
-            }else if (e.target.id=="clear-btn") {
-                clear_btn();
-            }
-        },false);
-    })(window)
-    
-</script>    
+    var data={
+        result:'',
+        flag:1,
+    };
+    var vm=new Vue({
+        el:'#app',
+        data:data,
+        methods:{
+            click_number_btn:function(number){
+
+                if(this.flag){
+
+                }else{
+                    this.result='';
+                    this.flag=1;
+                }
+                this.result+=number;
+            },
+            click_result_btn:function(){
+                try{if(this.result.length)
+                    this.result=window.eval(this.result);
+                }catch(err){
+                    this.result="ERROR";
+                }
+                this.flag=0;
+            },
+            click_cancel_btn:function(){
+                this.result='';
+            },
+            click_delete_btn:function(){
+                this.result=this.result.slice(0,this.result.length-1);
+            },
+        },
+    });
+</script>
 </body>
 </html>
